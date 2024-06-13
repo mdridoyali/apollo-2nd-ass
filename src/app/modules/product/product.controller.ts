@@ -1,10 +1,10 @@
+import { Request, Response } from 'express';
 import { productService } from './product.service';
 
 // create product
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-
     const result = await productService.createProductIntoDB(productData);
 
     res.status(200).json({
@@ -22,6 +22,26 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+// get all products
+const getAllProducts = async (req: Request, res: Response) => {
+  try {
+    const result = await productService.getAllProductsFromDB();
+
+    res.status(200).json({
+      success: true,
+      message: 'Products fetched successfully!',
+      data: result,
+    });
+  } catch (error: unknown) {
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while getting the products.',
+      error: error,
+    });
+  }
+};
+
 export const ProductControllers = {
   createProduct,
+  getAllProducts,
 };
