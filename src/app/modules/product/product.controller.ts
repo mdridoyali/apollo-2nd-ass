@@ -6,7 +6,6 @@ import { ProductValidation } from './product.validation';
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-
     //validate data using zod
     const productValidationData = ProductValidation.parse(productData);
 
@@ -32,17 +31,26 @@ const createProduct = async (req: Request, res: Response) => {
 // get all products
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await productService.getAllProductsFromDB();
+    const query = req.query.searchTerm as string;
+    const result = await productService.getProductsFromDB(query);
 
-    res.status(200).json({
-      success: true,
-      message: 'Products fetched successfully!',
-      data: result,
-    });
+    if (query) {
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term ${query} fetched successfully!`,
+        data: result,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'Products fetched successfully!',
+        data: result,
+      });
+    }
   } catch (error: unknown) {
     res.status(500).json({
       success: false,
-      message: 'An error occurred while getting the products.',
+      message: 'An error occurred.',
       error: error,
     });
   }
@@ -52,6 +60,8 @@ const getAllProducts = async (req: Request, res: Response) => {
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
+    const productQuery = req.query;
+    console.log(productQuery, 'query');
     const result = await productService.getAProductFromDB(productId);
     res.status(200).json({
       success: true,

@@ -4,12 +4,14 @@ import cors from 'cors';
 import app from './app';
 import config from './app/config';
 import { ProductRoutes } from './app/modules/product/product.route';
+import { OrderRoutes } from './app/modules/order/order.route';
 
 // parser
 app.use(express.json());
 app.use(cors());
 
 app.use('/api/products', ProductRoutes);
+app.use('/api/orders', OrderRoutes);
 
 async function main() {
   try {
