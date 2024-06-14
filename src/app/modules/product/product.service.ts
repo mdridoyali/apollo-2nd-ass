@@ -1,17 +1,20 @@
 import { ProductInterface } from './product.interface';
 import ProductModel from './product.model';
 
+//create product
 const createProductIntoDB = async (product: ProductInterface) => {
   const result = await ProductModel.create(product);
   return result;
 };
 
+// get all products
 const getAllProductsFromDB = async () => {
   const result = await ProductModel.find();
   return result;
 };
 
-const getSingleProductFromDB = async (id: string) => {
+// get single product
+const getAProductFromDB = async (id: string) => {
   const result = await ProductModel.findById(id);
   if (!result) {
     throw new Error('Product not found');
@@ -19,7 +22,8 @@ const getSingleProductFromDB = async (id: string) => {
   return result;
 };
 
-const updateSingleProductFromDB = async (id: string, productData: object) => {
+// update a product
+const updateAProductFromDB = async (id: string, productData: object) => {
   const result = await ProductModel.findByIdAndUpdate(id, productData, {
     new: true,
   });
@@ -29,9 +33,17 @@ const updateSingleProductFromDB = async (id: string, productData: object) => {
   return result;
 };
 
+// delete a product
+const deleteAProductFromDB = async (id: string) => {
+  const result = await ProductModel.findByIdAndDelete(id);
+
+  return result;
+};
+
 export const productService = {
   createProductIntoDB,
   getAllProductsFromDB,
-  getSingleProductFromDB,
-  updateSingleProductFromDB,
+  getAProductFromDB,
+  updateAProductFromDB,
+  deleteAProductFromDB,
 };
