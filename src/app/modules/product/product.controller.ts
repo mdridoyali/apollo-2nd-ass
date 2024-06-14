@@ -1,11 +1,18 @@
 import { Request, Response } from 'express';
 import { productService } from './product.service';
+import { ProductValidation } from './product.validation';
 
 // create product
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-    const result = await productService.createProductIntoDB(productData);
+
+    //validate data using zod
+    const productValidationData = ProductValidation.parse(productData);
+
+    const result = await productService.createProductIntoDB(
+      productValidationData,
+    );
 
     res.status(200).json({
       success: true,
@@ -16,8 +23,8 @@ const createProduct = async (req: Request, res: Response) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: 'An error occurred while creating the product.',
-      error: error instanceof Error ? error.message : 'Unknown error',
+      message: 'Something went wrong',
+      error: error,
     });
   }
 };
@@ -60,8 +67,34 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
+// get single products
+const updateSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const productData = req.body;
+    console.log(productId);
+    console.log(productData);
+    const result = await productService.updateSingleProductFromDB(
+      productId,
+      productData,
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully!',
+      data: result,
+    });
+  } catch (error: unknown) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: error,
+    });
+  }
+};
+
 export const ProductControllers = {
   createProduct,
   getAllProducts,
   getSingleProduct,
+  updateSingleProduct,
 };
