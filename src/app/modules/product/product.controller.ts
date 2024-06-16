@@ -9,7 +9,7 @@ const createProduct = async (req: Request, res: Response) => {
     //validate data using zod
     const productValidationData = ProductValidation.parse(productData);
 
-    const result = await productService.createProductIntoDB(
+    const result = await productService.createProductFormDB(
       productValidationData,
     );
 

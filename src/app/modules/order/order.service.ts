@@ -6,6 +6,17 @@ const createOrderIntoDB = async (order: OrderInterface) => {
   return result;
 };
 
+const getOrdersFormDB = async (email?: string) => {
+  let result;
+  if (email) {
+    result = await OrderModel.find({ email });
+  } else {
+    result = await OrderModel.find();
+  }
+  return result;
+};
+
 export const OrderService = {
   createOrderIntoDB,
+  getOrdersFormDB,
 };

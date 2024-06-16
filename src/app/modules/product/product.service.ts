@@ -2,14 +2,13 @@ import { ProductInterface } from './product.interface';
 import ProductModel from './product.model';
 
 //create product
-const createProductIntoDB = async (product: ProductInterface) => {
+const createProductFormDB = async (product: ProductInterface) => {
   const result = await ProductModel.create(product);
   return result;
 };
 
 // get all products
 const getProductsFromDB = async (searchTerm: string) => {
-  console.log(searchTerm, 'searchTerm');
   const filterData: any = {};
 
   if (searchTerm) {
@@ -53,7 +52,7 @@ const deleteAProductFromDB = async (id: string) => {
 };
 
 export const productService = {
-  createProductIntoDB,
+  createProductFormDB,
   getProductsFromDB,
   getAProductFromDB,
   updateAProductFromDB,
