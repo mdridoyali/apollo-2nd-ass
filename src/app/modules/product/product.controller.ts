@@ -19,7 +19,6 @@ const createProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
-    console.log(error);
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
@@ -60,8 +59,6 @@ const getAllProducts = async (req: Request, res: Response) => {
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
-    const productQuery = req.query;
-    console.log(productQuery, 'query');
     const result = await productService.getAProductFromDB(productId);
     res.status(200).json({
       success: true,
